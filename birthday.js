@@ -8,17 +8,47 @@ function initializeBackgroundMusic() {
 }
 
 function playBackgroundMusic() {
-    if (!backgroundMusic) {
-        initializeBackgroundMusic();
+    if (window.birthdayAudio) {
+        window.birthdayAudio.pause();
     }
-    
-    const playPromise = backgroundMusic.play();
-    if (playPromise !== undefined) {
-        playPromise.catch(error => {
-            console.error('Playback failed:', error);
-            createMusicButton();
-        });
-    }
+
+    const audio = new Audio('Perfect.mp3');
+    audio.volume = 0.2; // Set initial volume to 20%
+    audio.loop = true;  // Enable looping
+
+    // Add error handling
+    audio.onerror = function() {
+        console.error('Error playing the music');
+        createMusicButton();
+    };
+
+    // Add event listener for successful loading
+    audio.oncanplaythrough = function() {
+        // Fade in the audio
+        let currentVolume = 0;
+        audio.volume = currentVolume;
+        
+        const fadeIn = setInterval(() => {
+            currentVolume += 0.01;
+            if (currentVolume <= 0.2) {
+                audio.volume = currentVolume;
+            } else {
+                clearInterval(fadeIn);
+            }
+        }, 100);
+
+        const playPromise = audio.play();
+        
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                console.error('Playback failed:', error);
+                createMusicButton();
+            });
+        }
+    };
+
+    // Store audio in window object for later access
+    window.birthdayAudio = audio;
 }
 
 function createMusicButton() {
@@ -105,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
         card.classList.add('flipped');
         createFloatingHearts();
         createConfetti();
-        playBirthdaySong();
+        playBackgroundMusic();
     });
 
     // Gallery button click
@@ -581,127 +611,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function getRandomColor() {
         const colors = ['#ff6b6b', '#4ecdc4', '#ffd166', '#06d6a0', '#118ab2'];
         return colors[Math.floor(Math.random() * colors.length)];
-    }
-
-    function playBirthdaySong() {
-        // Create audio context for better control
-        if (window.birthdayAudio) {
-            window.birthdayAudio.pause();
-        }
-
-        const audio = new Audio();
-        // Try multiple music sources
-        const musicSources = [
-            'music/perfect.mp3',
-            'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-            'https://dl.dropboxusercontent.com/s/f8q3pzj2v5sds7j/perfect.mp3'
-        ];
-        
-        let currentSourceIndex = 0;
-        audio.volume = 0.2; // Set initial volume to 20% for soft playback
-        audio.loop = true;  // Enable looping
-        
-        // Function to try the next source
-        const tryNextSource = () => {
-            if (currentSourceIndex < musicSources.length) {
-                audio.src = musicSources[currentSourceIndex];
-                currentSourceIndex++;
-            } else {
-                console.error('All music sources failed to load');
-                createPlayButton(); // Show play button as fallback
-            }
-        };
-
-        // Add error handling
-        audio.onerror = function() {
-            console.log('Current source failed, trying next source...');
-            tryNextSource();
-        };
-
-        // Add event listener for successful loading
-        audio.oncanplaythrough = function() {
-            // Fade in the audio
-            let currentVolume = 0;
-            audio.volume = currentVolume;
-            
-            const fadeIn = setInterval(() => {
-                currentVolume += 0.01;
-                if (currentVolume <= 0.2) {
-                    audio.volume = currentVolume;
-                } else {
-                    clearInterval(fadeIn);
-                }
-            }, 100);
-
-            const playPromise = audio.play();
-            
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.error('Playback failed:', error);
-                    // If autoplay is blocked, show a play button
-                    createPlayButton();
-                });
-            }
-        };
-
-        // Start with first source
-        tryNextSource();
-
-        // Store audio in window object for later access
-        window.birthdayAudio = audio;
-    }
-
-    // Function to create a play button if autoplay fails
-    function createPlayButton() {
-        if (!document.querySelector('.music-play-btn')) {
-            const playBtn = document.createElement('button');
-            playBtn.className = 'music-play-btn';
-            playBtn.innerHTML = '<i class="fas fa-music"></i> Play Music';
-            playBtn.style.cssText = `
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                padding: 10px 20px;
-                background: #ff6b6b;
-                color: white;
-                border: none;
-                border-radius: 25px;
-                cursor: pointer;
-                font-size: 1rem;
-                z-index: 1000;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-                transition: all 0.3s ease;
-            `;
-            
-            // Add hover effect
-            playBtn.addEventListener('mouseenter', () => {
-                playBtn.style.transform = 'scale(1.05)';
-                playBtn.style.boxShadow = '0 4px 15px rgba(0,0,0,0.3)';
-            });
-            
-            playBtn.addEventListener('mouseleave', () => {
-                playBtn.style.transform = 'scale(1)';
-                playBtn.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
-            });
-            
-            playBtn.addEventListener('click', () => {
-                if (window.birthdayAudio) {
-                    window.birthdayAudio.play()
-                        .then(() => {
-                            playBtn.style.display = 'none';
-                        })
-                        .catch(error => {
-                            console.error('Playback failed:', error);
-                            alert('Please click again to play music');
-                        });
-                }
-            });
-            
-            document.body.appendChild(playBtn);
-        }
     }
 
     // Add initial animations
