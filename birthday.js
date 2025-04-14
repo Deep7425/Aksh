@@ -1,4 +1,92 @@
+// Background Music Setup
+let backgroundMusic;
+
+function initializeBackgroundMusic() {
+    backgroundMusic = new Audio('Perfect.mp3');
+    backgroundMusic.volume = 0.3;
+    backgroundMusic.loop = true;
+}
+
+function playBackgroundMusic() {
+    if (!backgroundMusic) {
+        initializeBackgroundMusic();
+    }
+    
+    const playPromise = backgroundMusic.play();
+    if (playPromise !== undefined) {
+        playPromise.catch(error => {
+            console.error('Playback failed:', error);
+            createMusicButton();
+        });
+    }
+}
+
+function createMusicButton() {
+    if (!document.querySelector('.music-control')) {
+        const musicBtn = document.createElement('button');
+        musicBtn.className = 'music-control';
+        musicBtn.innerHTML = '<i class="fas fa-music"></i>';
+        musicBtn.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        `;
+
+        let isPlaying = false;
+
+        musicBtn.addEventListener('click', () => {
+            if (!backgroundMusic) {
+                initializeBackgroundMusic();
+            }
+            
+            if (isPlaying) {
+                backgroundMusic.pause();
+                musicBtn.innerHTML = '<i class="fas fa-music"></i>';
+                musicBtn.style.background = '#ff6b6b';
+            } else {
+                backgroundMusic.play();
+                musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                musicBtn.style.background = '#4ecdc4';
+            }
+            isPlaying = !isPlaying;
+        });
+
+        musicBtn.addEventListener('mouseenter', () => {
+            musicBtn.style.transform = 'scale(1.1)';
+        });
+
+        musicBtn.addEventListener('mouseleave', () => {
+            musicBtn.style.transform = 'scale(1)';
+        });
+
+        document.body.appendChild(musicBtn);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize music button
+    createMusicButton();
+    
+    // Try to play music on first interaction
+    document.body.addEventListener('click', function initMusic() {
+        playBackgroundMusic();
+        document.body.removeEventListener('click', initMusic);
+    }, { once: true });
+
     const card = document.querySelector('.birthday-card');
     const openBtn = document.querySelector('.open-btn');
     const floatingHearts = document.querySelector('.floating-hearts');
