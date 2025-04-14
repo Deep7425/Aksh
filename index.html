@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="birthday.css">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
@@ -17,6 +18,9 @@
             <div class="card-inner">
                 <div class="card-front">
                     <h1 class="animate__animated animate__bounceIn">Happy Birthday Akansha! 🎂</h1>
+                    <div class="featured-image animate__animated animate__fadeIn">
+                        <img src="images/19.jpg" alt="Special Memory" onerror="this.style.display='none'">
+                    </div>
                     <div class="cake">
                         <div class="candle"></div>
                         <div class="flame"></div>
@@ -32,11 +36,51 @@
                         <p>You make every moment special, and today is all about celebrating you!</p>
                         <div class="hearts"></div>
                     </div>
-                    <div class="gallery">
-                        <div class="photo-frame"></div>
-                        <div class="photo-frame"></div>
-                        <div class="photo-frame"></div>
+                    <div class="buttons-container">
+                        <button class="gallery-btn">
+                            <i class="fas fa-images"></i> Our Memories
+                        </button>
+                        <button class="heart-message-btn">
+                            <i class="fas fa-heart"></i> Special Message
+                        </button>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gallery Modal -->
+        <div class="gallery-modal">
+            <div class="gallery-content">
+                <div class="modal-header">
+                    <button class="back-btn">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <span class="close-gallery">&times;</span>
+                </div>
+                <div class="gallery-container">
+                    <div class="gallery-scroller">
+                        <!-- Images will be added dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Heart Message Modal -->
+        <div class="heart-message-modal">
+            <div class="heart-message-content">
+                <div class="modal-header">
+                    <button class="back-btn">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <span class="close-heart-message">&times;</span>
+                </div>
+                <div class="heart-message-text">
+                    <h2>My Dearest Akansha,</h2>
+                    <p>Every moment with you feels like a beautiful dream. Your smile brightens my darkest days, and your love gives me strength I never knew I had.</p>
+                    <p>You're not just my girlfriend, you're my best friend, my partner in crime, and the love of my life. I cherish every memory we've created together.</p>
+                    <p>On your special day, I want you to know how much you mean to me. You're the most amazing person I've ever met, and I'm so grateful to have you in my life.</p>
+                    <p>Happy Birthday, my love! May all your dreams come true.</p>
+                    <div class="floating-hearts-in-message"></div>
                 </div>
             </div>
         </div>
