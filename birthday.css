@@ -323,7 +323,7 @@ h1 {
 
 .gallery-scroller {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    /* grid-template-columns: repeat(2, 40fr); */
     gap: 20px;
     padding: 20px;
     height: 100%;
@@ -1033,4 +1033,169 @@ h1 {
 /* Enhance button appearance */
 .open-btn:active {
     transform: scale(0.95);
+}
+
+/* Universal Back Button Style */
+.back-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: rgba(255, 107, 107, 0.9);
+    border: none;
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    z-index: 1100;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.back-btn i {
+    font-size: 1.2rem;
+}
+
+.back-btn:hover {
+    background: #ff6b6b;
+    transform: translateX(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.back-btn:active {
+    transform: translateX(-3px) scale(0.98);
+}
+
+/* Modal Header Styles */
+.modal-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+    z-index: 1050;
+}
+
+/* Mobile Responsive Back Button */
+@media (max-width: 480px) {
+    .back-btn {
+        top: 15px;
+        left: 15px;
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+
+    .back-btn i {
+        font-size: 1.1rem;
+    }
+
+    .modal-header {
+        padding: 12px 15px;
+    }
+}
+
+/* Landscape Mode Adjustments */
+@media (orientation: landscape) and (max-height: 600px) {
+    .back-btn {
+        top: 10px;
+        left: 10px;
+        padding: 8px 16px;
+    }
+}
+
+/* Full Image/Video View Back Button */
+.full-view-back {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: rgba(255, 107, 107, 0.9);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    z-index: 1100;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.full-view-back:hover {
+    background: #ff6b6b;
+    transform: translateX(-5px);
+}
+
+.full-view-back i {
+    font-size: 1.2rem;
+}
+
+/* Bottom Back Button Style */
+.bottom-back-btn {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 107, 107, 0.9);
+    border: none;
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 30px;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    z-index: 1100;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.bottom-back-btn:hover {
+    background: #ff6b6b;
+    transform: translateX(-50%) scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.bottom-back-btn:active {
+    transform: translateX(-50%) scale(0.98);
+}
+
+.bottom-back-btn i {
+    font-size: 1.2rem;
+}
+
+/* Mobile Responsive Bottom Back Button */
+@media (max-width: 480px) {
+    .bottom-back-btn {
+        bottom: 15px;
+        padding: 10px 25px;
+        font-size: 1rem;
+    }
+
+    .bottom-back-btn i {
+        font-size: 1.1rem;
+    }
+}
+
+/* Update message container to accommodate bottom button */
+.message, .heart-message-text {
+    padding-bottom: 80px !important;
+}
+
+/* Landscape Mode Adjustments */
+@media (orientation: landscape) and (max-height: 600px) {
+    .bottom-back-btn {
+        bottom: 10px;
+        padding: 8px 20px;
+    }
 } 

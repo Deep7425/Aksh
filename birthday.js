@@ -243,6 +243,14 @@ document.addEventListener('DOMContentLoaded', () => {
             {
                 path: 'images/15.jpg',
                 alt: 'Our Memory 15'
+            },
+            {
+                path: 'images/21.jpg',
+                alt: 'Our Memory 21'
+            },
+            {
+                path: 'images/22.jpg',
+                alt: 'Our Memory 22'
             }
         ];
 
@@ -261,6 +269,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 path: 'images/18.mp4',
                 alt: 'Our Special Moment 3',
                 thumbnail: 'images/18.jpg'
+            },
+            {
+                path: 'images/23.mp4',
+                alt: 'Our Special Moment 4',
+                thumbnail: 'images/23.jpg'
             }
         ];
 
@@ -627,5 +640,60 @@ document.addEventListener('DOMContentLoaded', () => {
         rotation: 360,
         ease: 'back.out(1.7)',
         delay: 0.5
+    });
+
+    // Add back button functionality
+    const cardBackBtn = document.querySelector('.card-back-btn');
+    if (cardBackBtn) {
+        cardBackBtn.addEventListener('click', () => {
+            document.querySelector('.birthday-card').classList.remove('flipped');
+        });
+    }
+
+    // Back buttons for modals
+    const galleryBackBtn = document.querySelector('.gallery-modal .back-btn');
+    if (galleryBackBtn) {
+        galleryBackBtn.addEventListener('click', () => {
+            document.querySelector('.gallery-modal').style.display = 'none';
+        });
+    }
+
+    const heartMessageBackBtn = document.querySelector('.heart-message-modal .back-btn');
+    if (heartMessageBackBtn) {
+        heartMessageBackBtn.addEventListener('click', () => {
+            document.querySelector('.heart-message-modal').style.display = 'none';
+        });
+    }
+
+    const fullImageBackBtn = document.querySelector('.full-image-view .back-btn');
+    if (fullImageBackBtn) {
+        fullImageBackBtn.addEventListener('click', () => {
+            document.querySelector('.full-image-view').style.display = 'none';
+            document.querySelector('.gallery-modal').style.display = 'block';
+        });
+    }
+
+    // Add escape key functionality
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const modals = [
+                '.gallery-modal',
+                '.heart-message-modal',
+                '.full-image-view'
+            ];
+            
+            modals.forEach(modal => {
+                const element = document.querySelector(modal);
+                if (element && element.style.display === 'block') {
+                    element.style.display = 'none';
+                }
+            });
+
+            // If card is flipped, unflip it
+            const card = document.querySelector('.birthday-card');
+            if (card && card.classList.contains('flipped')) {
+                card.classList.remove('flipped');
+            }
+        }
     });
 }); 
