@@ -3,6 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const openBtn = document.querySelector('.open-btn');
     const floatingHearts = document.querySelector('.floating-hearts');
     const confettiContainer = document.querySelector('.confetti-container');
+    const galleryBtn = document.querySelector('.gallery-btn');
+    const heartMessageBtn = document.querySelector('.heart-message-btn');
+    const galleryModal = document.querySelector('.gallery-modal');
+    const heartMessageModal = document.querySelector('.heart-message-modal');
+    const closeGallery = document.querySelector('.close-gallery');
+    const closeHeartMessage = document.querySelector('.close-heart-message');
+    const galleryScroller = document.querySelector('.gallery-scroller');
+    const backButtons = document.querySelectorAll('.back-btn');
 
     // Card flip animation
     openBtn.addEventListener('click', () => {
@@ -12,7 +20,443 @@ document.addEventListener('DOMContentLoaded', () => {
         playBirthdaySong();
     });
 
-    // Create floating hearts
+    // Gallery button click
+    galleryBtn.addEventListener('click', () => {
+        galleryModal.style.display = 'block';
+        loadGallery();
+        createFloatingHeartsInGallery();
+    });
+
+    // Heart message button click
+    heartMessageBtn.addEventListener('click', () => {
+        heartMessageModal.style.display = 'block';
+        createFloatingHeartsInMessage();
+    });
+
+    // Back buttons click
+    backButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            galleryModal.style.display = 'none';
+            heartMessageModal.style.display = 'none';
+        });
+    });
+
+    // Close buttons
+    closeGallery.addEventListener('click', () => {
+        galleryModal.style.display = 'none';
+    });
+
+    closeHeartMessage.addEventListener('click', () => {
+        heartMessageModal.style.display = 'none';
+    });
+
+    // Close modals when clicking outside
+    window.addEventListener('click', (e) => {
+        if (e.target === galleryModal) {
+            galleryModal.style.display = 'none';
+        }
+        if (e.target === heartMessageModal) {
+            heartMessageModal.style.display = 'none';
+        }
+    });
+
+    // Load gallery images and videos
+    function loadGallery() {
+        galleryScroller.innerHTML = '';
+        
+        // Add images from local storage
+        const images = [
+            {
+                path: 'images/1.jpg',
+                alt: 'Our Memory 1'
+            },
+            {
+                path: 'images/2.jpg',
+                alt: 'Our Memory 2'
+            },
+            {
+                path: 'images/3.jpg',
+                alt: 'Our Memory 3'
+            },
+            {
+                path: 'images/4.jpg',
+                alt: 'Our Memory 4'
+            },
+            {
+                path: 'images/5.jpg',
+                alt: 'Our Memory 5'
+            },
+            {
+                path: 'images/6.jpg',
+                alt: 'Our Memory 6'
+            },
+            {
+                path: 'images/7.jpg',
+                alt: 'Our Memory 7'
+            },
+            {
+                path: 'images/8.jpg',
+                alt: 'Our Memory 8'
+            },
+            {
+                path: 'images/9.jpg',
+                alt: 'Our Memory 9'
+            },
+            {
+                path: 'images/10.jpg',
+                alt: 'Our Memory 10'
+            },
+            {
+                path: 'images/11.jpg',
+                alt: 'Our Memory 11'
+            },
+            {
+                path: 'images/12.jpg',
+                alt: 'Our Memory 12'
+            },
+            {
+                path: 'images/13.jpg',
+                alt: 'Our Memory 13'
+            },
+            {
+                path: 'images/14.jpg',
+                alt: 'Our Memory 14'
+            },
+            {
+                path: 'images/15.jpg',
+                alt: 'Our Memory 15'
+            }
+        ];
+
+        const videos = [
+            {
+                path: 'images/16.mp4',
+                alt: 'Our Special Moment 1',
+                thumbnail: 'images/16.jpg'
+            },
+            {
+                path: 'images/17.mp4',
+                alt: 'Our Special Moment 2',
+                thumbnail: 'images/17.jpg'
+            },
+            {
+                path: 'images/18.mp4',
+                alt: 'Our Special Moment 3',
+                thumbnail: 'images/18.jpg'
+            }
+        ];
+
+        // Create sections
+        const galleryContainer = document.createElement('div');
+        galleryContainer.className = 'gallery-sections';
+
+        // Images Section
+        const imagesSection = document.createElement('div');
+        imagesSection.className = 'images-section';
+        imagesSection.innerHTML = '<h2 class="section-title">Our Beautiful Memories 💝</h2>';
+        const imageGrid = document.createElement('div');
+        imageGrid.className = 'image-grid';
+
+        // Videos Section
+        const videosSection = document.createElement('div');
+        videosSection.className = 'videos-section';
+        videosSection.innerHTML = '<h2 class="section-title">Our Special Moments ❤️</h2>';
+        const videoGrid = document.createElement('div');
+        videoGrid.className = 'video-grid';
+
+        // Add images
+        images.forEach(image => {
+            const imgContainer = document.createElement('div');
+            imgContainer.className = 'gallery-item';
+            
+            const img = document.createElement('img');
+            img.src = image.path;
+            img.alt = image.alt;
+            img.loading = 'lazy';
+            
+            // Add error handling for images
+            img.onerror = function() {
+                this.src = 'images/heart.png';
+                this.onerror = null;
+            };
+            
+            // Add hover effect
+            imgContainer.addEventListener('mouseenter', () => {
+                gsap.to(imgContainer, {
+                    scale: 1.05,
+                    duration: 0.3,
+                    ease: 'power2.out',
+                    zIndex: 1
+                });
+            });
+
+            imgContainer.addEventListener('mouseleave', () => {
+                gsap.to(imgContainer, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: 'power2.out',
+                    zIndex: 0
+                });
+            });
+
+            // Add click event to show full-size image
+            imgContainer.addEventListener('click', () => {
+                const fullImage = document.createElement('div');
+                fullImage.className = 'full-image-view';
+                fullImage.innerHTML = `
+                    <div class="full-view-header">
+                        <button class="full-view-back">
+                            <i class="fas fa-arrow-left"></i> Back to Gallery
+                        </button>
+                        <button class="close-full-image">&times;</button>
+                    </div>
+                    <div class="full-image-content">
+                        <img src="${image.path}" alt="${image.alt}" onerror="this.src='images/heart.png'">
+                    </div>
+                `;
+                document.body.appendChild(fullImage);
+
+                // Handle back and close buttons
+                const backBtn = fullImage.querySelector('.full-view-back');
+                const closeBtn = fullImage.querySelector('.close-full-image');
+
+                backBtn.addEventListener('click', () => {
+                    gsap.to(fullImage, {
+                        opacity: 0,
+                        duration: 0.3,
+                        ease: 'power2.out',
+                        onComplete: () => fullImage.remove()
+                    });
+                });
+
+                closeBtn.addEventListener('click', () => {
+                    gsap.to(fullImage, {
+                        opacity: 0,
+                        duration: 0.3,
+                        ease: 'power2.out',
+                        onComplete: () => fullImage.remove()
+                    });
+                });
+
+                // Close on background click
+                fullImage.addEventListener('click', (e) => {
+                    if (e.target === fullImage) {
+                        gsap.to(fullImage, {
+                            opacity: 0,
+                            duration: 0.3,
+                            ease: 'power2.out',
+                            onComplete: () => fullImage.remove()
+                        });
+                    }
+                });
+
+                // Entrance animation
+                gsap.from(fullImage.querySelector('.full-image-content'), {
+                    scale: 0.8,
+                    opacity: 0,
+                    duration: 0.5,
+                    ease: 'power2.out'
+                });
+            });
+            
+            imgContainer.appendChild(img);
+            imageGrid.appendChild(imgContainer);
+        });
+
+        // Add videos
+        videos.forEach((video, index) => {
+            const videoContainer = document.createElement('div');
+            videoContainer.className = 'video-item';
+            
+            const videoWrapper = document.createElement('div');
+            videoWrapper.className = 'video-wrapper';
+            
+            const videoElement = document.createElement('video');
+            videoElement.src = video.path;
+            videoElement.poster = video.thumbnail;
+            videoElement.controls = true;
+            videoElement.preload = 'metadata';
+            
+            const playButton = document.createElement('button');
+            playButton.className = 'video-play-btn';
+            playButton.innerHTML = '<i class="fas fa-play"></i>';
+            
+            // Video hover effect
+            videoContainer.addEventListener('mouseenter', () => {
+                gsap.to(videoContainer, {
+                    scale: 1.05,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+                gsap.to(playButton, {
+                    scale: 1.2,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+
+            videoContainer.addEventListener('mouseleave', () => {
+                gsap.to(videoContainer, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+                gsap.to(playButton, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+
+            // Play button click
+            playButton.addEventListener('click', () => {
+                const fullVideo = document.createElement('div');
+                fullVideo.className = 'full-video-view';
+                fullVideo.innerHTML = `
+                    <div class="full-view-header">
+                        <button class="full-view-back">
+                            <i class="fas fa-arrow-left"></i> Back to Gallery
+                        </button>
+                        <button class="close-full-video">&times;</button>
+                    </div>
+                    <div class="full-video-content">
+                        <video src="${video.path}" controls autoplay></video>
+                    </div>
+                `;
+                document.body.appendChild(fullVideo);
+
+                // Handle back and close buttons
+                const backBtn = fullVideo.querySelector('.full-view-back');
+                const closeBtn = fullVideo.querySelector('.close-full-video');
+                const videoElement = fullVideo.querySelector('video');
+
+                backBtn.addEventListener('click', () => {
+                    videoElement.pause();
+                    gsap.to(fullVideo, {
+                        opacity: 0,
+                        duration: 0.3,
+                        ease: 'power2.out',
+                        onComplete: () => fullVideo.remove()
+                    });
+                });
+
+                closeBtn.addEventListener('click', () => {
+                    videoElement.pause();
+                    gsap.to(fullVideo, {
+                        opacity: 0,
+                        duration: 0.3,
+                        ease: 'power2.out',
+                        onComplete: () => fullVideo.remove()
+                    });
+                });
+
+                // Close on background click
+                fullVideo.addEventListener('click', (e) => {
+                    if (e.target === fullVideo) {
+                        videoElement.pause();
+                        gsap.to(fullVideo, {
+                            opacity: 0,
+                            duration: 0.3,
+                            ease: 'power2.out',
+                            onComplete: () => fullVideo.remove()
+                        });
+                    }
+                });
+
+                // Entrance animation
+                gsap.from(fullVideo.querySelector('.full-video-content'), {
+                    scale: 0.8,
+                    opacity: 0,
+                    duration: 0.5,
+                    ease: 'power2.out'
+                });
+            });
+
+            videoWrapper.appendChild(videoElement);
+            videoWrapper.appendChild(playButton);
+            videoContainer.appendChild(videoWrapper);
+            videoGrid.appendChild(videoContainer);
+        });
+
+        // Append sections
+        imagesSection.appendChild(imageGrid);
+        videosSection.appendChild(videoGrid);
+        galleryContainer.appendChild(imagesSection);
+        galleryContainer.appendChild(videosSection);
+        galleryScroller.appendChild(galleryContainer);
+
+        // Add smooth scroll animation
+        gsap.from('.gallery-item', {
+            duration: 0.8,
+            y: 50,
+            opacity: 0,
+            stagger: {
+                amount: 1,
+                grid: [4, 4]
+            },
+            ease: 'power2.out'
+        });
+
+        gsap.from('.video-item', {
+            duration: 0.8,
+            y: 50,
+            opacity: 0,
+            stagger: 0.2,
+            ease: 'power2.out',
+            delay: 0.5
+        });
+
+        gsap.from('.section-title', {
+            duration: 1,
+            x: -50,
+            opacity: 0,
+            ease: 'power2.out',
+            stagger: 0.3
+        });
+    }
+
+    // Create floating hearts in gallery
+    function createFloatingHeartsInGallery() {
+        const heartsContainer = document.createElement('div');
+        heartsContainer.className = 'floating-hearts-gallery';
+        galleryModal.appendChild(heartsContainer);
+
+        for (let i = 0; i < 30; i++) {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 3 + 's';
+            heart.style.opacity = Math.random();
+            heart.style.transform = `rotate(${Math.random() * 360}deg)`;
+            heartsContainer.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+    }
+
+    // Create floating hearts in message
+    function createFloatingHeartsInMessage() {
+        const heartsContainer = document.querySelector('.floating-hearts-in-message');
+        heartsContainer.innerHTML = '';
+
+        for (let i = 0; i < 20; i++) {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = Math.random() * 3 + 3 + 's';
+            heart.style.opacity = Math.random();
+            heart.style.transform = `rotate(${Math.random() * 360}deg)`;
+            heartsContainer.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+    }
+
+    // Existing functions
     function createFloatingHearts() {
         for (let i = 0; i < 50; i++) {
             const heart = document.createElement('div');
@@ -23,14 +467,12 @@ document.addEventListener('DOMContentLoaded', () => {
             heart.style.transform = `rotate(${Math.random() * 360}deg)`;
             floatingHearts.appendChild(heart);
 
-            // Remove heart after animation
             setTimeout(() => {
                 heart.remove();
             }, 6000);
         }
     }
 
-    // Create confetti
     function createConfetti() {
         for (let i = 0; i < 100; i++) {
             const confetti = document.createElement('div');
@@ -42,45 +484,137 @@ document.addEventListener('DOMContentLoaded', () => {
             confetti.style.height = Math.random() * 10 + 5 + 'px';
             confettiContainer.appendChild(confetti);
 
-            // Remove confetti after animation
             setTimeout(() => {
                 confetti.remove();
             }, 3000);
         }
     }
 
-    // Get random color for confetti
     function getRandomColor() {
         const colors = ['#ff6b6b', '#4ecdc4', '#ffd166', '#06d6a0', '#118ab2'];
         return colors[Math.floor(Math.random() * colors.length)];
     }
 
-    // Play birthday song
     function playBirthdaySong() {
-        const audio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
-        audio.volume = 0.3;
-        audio.play();
+        // Create audio context for better control
+        if (window.birthdayAudio) {
+            window.birthdayAudio.pause();
+        }
+
+        const audio = new Audio();
+        // Try multiple music sources
+        const musicSources = [
+            'music/perfect.mp3',
+            'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+            'https://dl.dropboxusercontent.com/s/f8q3pzj2v5sds7j/perfect.mp3'
+        ];
+        
+        let currentSourceIndex = 0;
+        audio.volume = 0.2; // Set initial volume to 20% for soft playback
+        audio.loop = true;  // Enable looping
+        
+        // Function to try the next source
+        const tryNextSource = () => {
+            if (currentSourceIndex < musicSources.length) {
+                audio.src = musicSources[currentSourceIndex];
+                currentSourceIndex++;
+            } else {
+                console.error('All music sources failed to load');
+                createPlayButton(); // Show play button as fallback
+            }
+        };
+
+        // Add error handling
+        audio.onerror = function() {
+            console.log('Current source failed, trying next source...');
+            tryNextSource();
+        };
+
+        // Add event listener for successful loading
+        audio.oncanplaythrough = function() {
+            // Fade in the audio
+            let currentVolume = 0;
+            audio.volume = currentVolume;
+            
+            const fadeIn = setInterval(() => {
+                currentVolume += 0.01;
+                if (currentVolume <= 0.2) {
+                    audio.volume = currentVolume;
+                } else {
+                    clearInterval(fadeIn);
+                }
+            }, 100);
+
+            const playPromise = audio.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.error('Playback failed:', error);
+                    // If autoplay is blocked, show a play button
+                    createPlayButton();
+                });
+            }
+        };
+
+        // Start with first source
+        tryNextSource();
+
+        // Store audio in window object for later access
+        window.birthdayAudio = audio;
     }
 
-    // Add hover effect to photo frames
-    const photoFrames = document.querySelectorAll('.photo-frame');
-    photoFrames.forEach(frame => {
-        frame.addEventListener('mouseenter', () => {
-            gsap.to(frame, {
-                scale: 1.1,
-                duration: 0.3,
-                ease: 'power2.out'
+    // Function to create a play button if autoplay fails
+    function createPlayButton() {
+        if (!document.querySelector('.music-play-btn')) {
+            const playBtn = document.createElement('button');
+            playBtn.className = 'music-play-btn';
+            playBtn.innerHTML = '<i class="fas fa-music"></i> Play Music';
+            playBtn.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                padding: 10px 20px;
+                background: #ff6b6b;
+                color: white;
+                border: none;
+                border-radius: 25px;
+                cursor: pointer;
+                font-size: 1rem;
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                transition: all 0.3s ease;
+            `;
+            
+            // Add hover effect
+            playBtn.addEventListener('mouseenter', () => {
+                playBtn.style.transform = 'scale(1.05)';
+                playBtn.style.boxShadow = '0 4px 15px rgba(0,0,0,0.3)';
             });
-        });
-
-        frame.addEventListener('mouseleave', () => {
-            gsap.to(frame, {
-                scale: 1,
-                duration: 0.3,
-                ease: 'power2.out'
+            
+            playBtn.addEventListener('mouseleave', () => {
+                playBtn.style.transform = 'scale(1)';
+                playBtn.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
             });
-        });
-    });
+            
+            playBtn.addEventListener('click', () => {
+                if (window.birthdayAudio) {
+                    window.birthdayAudio.play()
+                        .then(() => {
+                            playBtn.style.display = 'none';
+                        })
+                        .catch(error => {
+                            console.error('Playback failed:', error);
+                            alert('Please click again to play music');
+                        });
+                }
+            });
+            
+            document.body.appendChild(playBtn);
+        }
+    }
 
     // Add initial animations
     gsap.from('.birthday-card', {
